@@ -38,7 +38,9 @@ function Widgets:Slider(options)
   frame:SetBackdropColor(Colors.DarkGrey:GetRGBA(0.5))
   frame:SetBackdropBorderColor(Colors.DarkGrey:GetRGBA(0.5))
 
-  frame:SetObeyStepOnDrag(true)
+  if frame.SetObeyStepOnDrag then
+    frame:SetObeyStepOnDrag(true)
+  end
   frame:SetOrientation(options.orientation)
   frame:SetValueStep(options.valueStep)
   frame:SetMinMaxValues(options.minValue, options.maxValue)

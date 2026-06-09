@@ -91,8 +91,12 @@ function Commands.keybinds()
   CloseAllWindows()
 
   -- Open the settings panel.
-  local keybindingsCategoryId = SettingsPanel.keybindingsCategory:GetID()
-  Settings.OpenToCategory(keybindingsCategoryId)
+  if SettingsPanel and Settings then
+    local keybindingsCategoryId = SettingsPanel.keybindingsCategory:GetID()
+    Settings.OpenToCategory(keybindingsCategoryId)
+  elseif KeyBindingFrame then
+    ShowUIPanel(KeyBindingFrame)
+  end
 end
 
 --- Toggles the `TransportFrame` based on the given `listName` and `listType`.

@@ -148,7 +148,9 @@ MainWindow.frame = (function()
   frame.searchBox:SetTextColor(1, 1, 1)
   frame.searchBox:SetAutoFocus(false)
   frame.searchBox:SetMultiLine(false)
-  frame.searchBox:SetCountInvisibleLetters(true)
+  if frame.searchBox.SetCountInvisibleLetters then
+    frame.searchBox:SetCountInvisibleLetters(true)
+  end
   frame.searchBox:SetPoint("TOPLEFT", Widgets:Padding(), 0)
   frame.searchBox:SetPoint("BOTTOMLEFT", Widgets:Padding(), 0)
   frame.searchBox:SetPoint("TOPRIGHT", frame.searchButton, "TOPLEFT", 0, 0)

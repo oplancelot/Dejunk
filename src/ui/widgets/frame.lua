@@ -86,7 +86,9 @@ function Widgets:Frame(options)
   local frame = CreateFrame(options.frameType, options.name, options.parent)
 
   -- Clip children.
-  frame:SetClipsChildren(options.clipChildren)
+  if frame.SetClipsChildren then
+    frame:SetClipsChildren(options.clipChildren)
+  end
 
   -- Backdrop.
   Mixin(frame, BackdropTemplateMixin)

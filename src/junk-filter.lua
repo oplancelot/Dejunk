@@ -178,6 +178,50 @@ function JunkFilter:IsJunkItem(item)
     return true, concat(L.LISTS, Lists.GlobalInclusions.name)
   end
 
+  -- Ascension Compatibility checks.
+  if type(GetItemInfoInstant) == "function" then
+    local itemInfo = GetItemInfoInstant(item.id)
+    if type(itemInfo) == "table" and itemInfo.description then
+      if string.find(itemInfo.description, "@Mythic %d") or string.find(itemInfo.description, "@Mythic Level") then
+        return false, "Ascension Mythic+"
+      elseif itemInfo.inventoryType == 0 and (string.find(itemInfo.description, "This Token") or string.find(itemInfo.description, "This token")) then
+        return false, "Ascension Tier Token"
+      elseif string.find(itemInfo.description, "@re") then
+        return false, "Ascension Mystic Enchant"
+      end
+    end
+  end
+
+  local ascensionTools = {
+    [5956] = true, [6219] = true, [20824] = true, [20815] = true, [10498] = true,
+    [22463] = true, [22462] = true, [22461] = true, [16207] = true, [11145] = true,
+    [11130] = true, [6339] = true, [6218] = true, [23821] = true, [6954] = true,
+    [9149] = true, [2901] = true, [7005] = true
+  }
+  if ascensionTools[item.id] then
+    return false, "Ascension Tool"
+  end
+
+  if type(VANITY_ITEMS) == "table" and item.quality == 6 then
+    if VANITY_ITEMS[item.id] and VANITY_ITEMS[item.id].itemid > 0 then
+      return false, "Ascension Vanity"
+    end
+  end
+
+  if C_Appearance and C_Appearance.GetItemAppearanceID and C_AppearanceCollection and C_AppearanceCollection.IsAppearanceCollected then
+    if item.classId == Enum.ItemClass.Weapon or item.classId == Enum.ItemClass.Armor then
+      if item.subclassId ~= Enum.ItemWeaponSubclass.Thrown and item.id ~= 5956 then
+        local appearanceID = C_Appearance.GetItemAppearanceID(item.id)
+        if appearanceID then
+          local isCollected = C_AppearanceCollection.IsAppearanceCollected(appearanceID)
+          if not isCollected then
+            return false, "Uncollected Transmog"
+          end
+        end
+      end
+    end
+  end
+
   -- Exclude equipment sets.
   if not (Addon.IS_VANILLA or Addon.IS_TBC) and currentState.excludeEquipmentSets and item.isEquipmentSet then
     return false, concat(L.OPTIONS_TEXT, L.EXCLUDE_EQUIPMENT_SETS_TEXT)
