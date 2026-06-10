@@ -87,6 +87,7 @@ function Widgets:ItemsFrame(options)
     end
   end
 
+  frame:EnableMouse(true)
   frame:SetScript("OnMouseDown", frame.AddCursorItem)
 
   frame:SetScript("OnMouseWheel", function(self, delta)
@@ -95,6 +96,15 @@ function Widgets:ItemsFrame(options)
 
   frame:SetScript("OnUpdate", function(self)
     local items = options.getItems()
+
+    -- Update slider values.
+    local maxVal = max((#items - #self.buttons), 0)
+    self.slider:SetMinMaxValues(0, maxVal)
+    if maxVal == 0 then
+      self.slider:Hide()
+    else
+      self.slider:Show()
+    end
 
     -- Update buttons.
     for i, button in ipairs(self.buttons) do
@@ -108,29 +118,39 @@ function Widgets:ItemsFrame(options)
       end
 
       -- Points.
+      button:ClearAllPoints()
       if i == 1 then
         button:SetPoint("TOPLEFT", self.titleButton, "BOTTOMLEFT", SPACING, -SPACING)
-        button:SetPoint("TOPRIGHT", self.slider, "TOPLEFT", -SPACING, 0)
+        if maxVal == 0 then
+          button:SetPoint("TOPRIGHT", self.titleButton, "BOTTOMRIGHT", -SPACING, -SPACING)
+        else
+          button:SetPoint("TOPRIGHT", self.slider, "TOPLEFT", -SPACING, 0)
+        end
       else
         button:SetPoint("TOPLEFT", self.buttons[i - 1], "BOTTOMLEFT", 0, -SPACING)
         button:SetPoint("TOPRIGHT", self.buttons[i - 1], "BOTTOMRIGHT", 0, -SPACING)
       end
 
       -- Height.
-      local buttonArea = self:GetHeight() - self.titleButton:GetHeight() - (SPACING * 2)
-      local buttonSpacing = (options.numButtons - 1) * SPACING
-      button:SetHeight((buttonArea - buttonSpacing) / options.numButtons)
-    end
+      -- In WotLK 3.3.5, GetHeight() returns the explicitly set value (e.g. 1)
+      -- rather than the actual rendered size from anchor stretching.
+      -- Always use GetTop()-GetBottom() when available for the true size.
+      local frameHeight
+      if self:GetTop() and self:GetBottom() then
+        frameHeight = self:GetTop() - self:GetBottom()
+      else
+        frameHeight = self:GetHeight()
+      end
+      local titleHeight
+      if self.titleButton:GetTop() and self.titleButton:GetBottom() then
+        titleHeight = self.titleButton:GetTop() - self.titleButton:GetBottom()
+      else
+        titleHeight = self.titleButton:GetHeight()
+      end
 
-    -- Update slider values.
-    local maxVal = max((#items - #self.buttons), 0)
-    self.slider:SetMinMaxValues(0, maxVal)
-    if maxVal == 0 then
-      self.slider:Hide()
-      self.buttons[1]:SetPoint("TOPRIGHT", self.titleButton, "BOTTOMRIGHT", -SPACING, -SPACING)
-    else
-      self.slider:Show()
-      self.buttons[1]:SetPoint("TOPRIGHT", self.slider, "TOPLEFT", -SPACING, 0)
+      local buttonArea = frameHeight - titleHeight - (SPACING * 2)
+      local buttonSpacing = (options.numButtons - 1) * SPACING
+      button:SetHeight(max(1, (buttonArea - buttonSpacing) / options.numButtons))
     end
 
     -- Update "No items." text.

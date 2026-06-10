@@ -38,7 +38,20 @@ C_Container.GetContainerItemPurchaseInfo = C_Container.GetContainerItemPurchaseI
 if not C_Item then
   C_Item = {}
 end
-C_Item.GetItemInfo = C_Item.GetItemInfo or GetItemInfo
+
+if not C_Item.GetItemInfo then
+  C_Item.GetItemInfo = GetItemInfo
+end
+
+if not C_Item.GetItemInfoInstant then
+  -- WotLK doesn't have GetItemInfoInstant, so we fallback to GetItemInfo
+  C_Item.GetItemInfoInstant = GetItemInfo
+end
+
+if not GetItemInfoInstant then
+  GetItemInfoInstant = GetItemInfo
+end
+
 if not C_Item.GetDetailedItemLevelInfo then
   C_Item.GetDetailedItemLevelInfo = GetDetailedItemLevelInfo or function(item)
     -- In 3.3.5, GetDetailedItemLevelInfo does not exist; fall back to nil so callers use itemLevel

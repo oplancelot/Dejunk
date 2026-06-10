@@ -51,9 +51,15 @@ function Widgets:ScrollableTitleFrame(options)
     scrollChild:SetWidth(self.scrollFrame:GetWidth())
 
     -- Slider.
-    local maxSliderValue = math.max(scrollChild:GetHeight() - frame.scrollFrame:GetHeight(), 0)
+    local scrollFrameHeight = self.scrollFrame:GetHeight()
+    if scrollFrameHeight == 0 and self.scrollFrame:GetTop() then
+      scrollFrameHeight = self.scrollFrame:GetTop() - self.scrollFrame:GetBottom()
+    end
+    local maxSliderValue = math.max(scrollChild:GetHeight() - scrollFrameHeight, 0)
     self.slider:SetMinMaxValues(0, maxSliderValue)
 
+    self.scrollFrame:ClearAllPoints()
+    self.scrollFrame:SetPoint("TOPLEFT", self.titleButton, "BOTTOMLEFT", SPACING, -SPACING)
     if maxSliderValue > 0 then
       self.slider:Show()
       self.scrollFrame:SetPoint("BOTTOMRIGHT", self.slider, "BOTTOMLEFT", -SPACING, 0)
