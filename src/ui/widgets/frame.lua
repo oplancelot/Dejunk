@@ -122,6 +122,8 @@ function Widgets:Frame(options)
 
   -- Click handling.
   if options.enableClickHandling then
+    frame:EnableMouse(true)
+
     --- @enum (key) FrameWidgetMouseButtonType
     local clickHandlers = {
       LeftButton = {},

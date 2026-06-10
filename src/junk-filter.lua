@@ -149,6 +149,7 @@ function JunkFilter:IsJunkItem(item)
 
   -- Check if item can be sold or destroyed.
   if not (Items:IsItemSellable(item) or Items:IsItemDestroyable(item)) then
+    print("|cffff0000[Debug]|r Early Filter (Not Sellable/Destroyable):", item.name, "quality:", item.quality, "price:", item.price, "noValue:", tostring(item.noValue), "junkable:", tostring(Items:IsItemJunkable(item)))
     return false
   end
 
@@ -246,7 +247,9 @@ function JunkFilter:IsJunkItem(item)
   -- Include by quality.
   if currentState.includeByQuality then
     local checkBoxValues = currentState.itemQualityCheckBoxes.includeByQuality
-    if isItemQualityCheckBoxValueEnabled(item.quality, checkBoxValues) then
+    local enabled = isItemQualityCheckBoxValueEnabled(item.quality, checkBoxValues)
+    print("|cffff0000[Debug]|r item:", item.name, "quality:", item.quality, "includeByQuality:", tostring(currentState.includeByQuality), "poor:", tostring(checkBoxValues.poor), "common:", tostring(checkBoxValues.common), "uncommon:", tostring(checkBoxValues.uncommon), "enabled:", tostring(enabled))
+    if enabled then
       return true, concat(L.OPTIONS_TEXT, L.INCLUDE_BY_QUALITY_TEXT)
     end
   end
