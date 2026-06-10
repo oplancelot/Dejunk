@@ -9,8 +9,17 @@ if not C_Container then
 end
 if not C_Container.GetContainerItemInfo then
   C_Container.GetContainerItemInfo = function(bag, slot)
-    local texture, count, locked, quality, readable, lootable, link, _, hasNoValue, itemID = GetContainerItemInfo(bag, slot)
+    -- WotLK 3.3.5 returns: texture, count, locked, quality, readable, lootable, link
+    local texture, count, locked, quality, readable, lootable, link = GetContainerItemInfo(bag, slot)
     if not texture then return nil end
+    -- Extract itemID from the hyperlink since WotLK doesn't return it directly
+    local itemID = link and tonumber(link:match("item:(%d+):"))
+    -- Determine hasNoValue from sell price (GetItemInfo return #11 is sellPrice)
+    local hasNoValue = false
+    if itemID then
+      local _, _, _, _, _, _, _, _, _, _, sellPrice = GetItemInfo(itemID)
+      hasNoValue = (not sellPrice or sellPrice == 0)
+    end
     return {
       iconFileID = texture,
       stackCount = count,

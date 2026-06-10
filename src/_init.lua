@@ -64,7 +64,7 @@ end
 --- @return number latency value will always be `>= 0.2` seconds
 function Addon:GetLatency(minLatency)
   local _, _, home, world = GetNetStats()
-  local latency = max(home, world) * 0.001
+  local latency = max(home or 0, world or 0) * 0.001
   return max(latency, minLatency or 0.2)
 end
 

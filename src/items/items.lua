@@ -81,13 +81,18 @@ local function getItem(bag, slot)
   if item == nil then return nil end
 
   -- GetItemInfo.
-  local name, _, _, itemLevel, _, _, _, _, invType, _, price, classId, subclassId = GetItemInfo(item.link)
+  local name, _, quality, itemLevel, _, _, _, _, invType, _, price, classId, subclassId = GetItemInfo(item.link)
   if name == nil then
-    name, _, _, itemLevel, _, _, _, _, invType, _, price, classId, subclassId = GetItemInfo(item.id)
+    name, _, quality, itemLevel, _, _, _, _, invType, _, price, classId, subclassId = GetItemInfo(item.id)
     if name == nil then return nil end
   end
 
   item.name = name
+  -- In WotLK 3.3.5, GetContainerItemInfo often returns quality as -1.
+  -- Use the correct quality from GetItemInfo instead.
+  if quality and (item.quality == nil or item.quality < 0) then
+    item.quality = quality
+  end
   item.itemLevel = GetDetailedItemLevelInfo(item.link) or itemLevel
   item.invType = invType
   item.price = price
