@@ -247,9 +247,7 @@ function JunkFilter:IsJunkItem(item)
   -- Include by quality.
   if currentState.includeByQuality then
     local checkBoxValues = currentState.itemQualityCheckBoxes.includeByQuality
-    local enabled = isItemQualityCheckBoxValueEnabled(item.quality, checkBoxValues)
-    print("|cffff0000[Debug]|r item:", item.name, "quality:", item.quality, "includeByQuality:", tostring(currentState.includeByQuality), "poor:", tostring(checkBoxValues.poor), "common:", tostring(checkBoxValues.common), "uncommon:", tostring(checkBoxValues.uncommon), "enabled:", tostring(enabled))
-    if enabled then
+    if isItemQualityCheckBoxValueEnabled(item.quality, checkBoxValues) then
       return true, concat(L.OPTIONS_TEXT, L.INCLUDE_BY_QUALITY_TEXT)
     end
   end
