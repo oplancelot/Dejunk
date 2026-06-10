@@ -36,6 +36,7 @@
   <Script file="src\store\reducers\autoJunkFrame.lua"/>
   <Script file="src\store\reducers\autoRepair.lua"/>
   <Script file="src\store\reducers\autoSell.lua"/>
+  <Script file="src\store\reducers\excludeConsumables.lua"/>
   <Script file="src\store\reducers\excludeEquipmentSets.lua"/>
   <Script file="src\store\reducers\excludeUnboundEquipment.lua"/>
   <Script file="src\store\reducers\excludeWarbandEquipment.lua"/>

@@ -12,6 +12,7 @@ local DEFAULT_STATE = {
   autoSell = false,
   safeMode = false,
 
+  excludeConsumables = false,
   excludeEquipmentSets = true,
   excludeUnboundEquipment = false,
   excludeWarbandEquipment = false,

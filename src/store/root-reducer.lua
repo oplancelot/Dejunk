@@ -23,6 +23,7 @@ function RootReducer:Build()
     autoSell = ReducerFactories.autoSell(DefaultStates.Global, ActionTypes.Global),
     safeMode = ReducerFactories.safeMode(DefaultStates.Global, ActionTypes.Global),
 
+    excludeConsumables = ReducerFactories.excludeConsumables(DefaultStates.Global, ActionTypes.Global),
     excludeEquipmentSets = ReducerFactories.excludeEquipmentSets(DefaultStates.Global, ActionTypes.Global),
     excludeUnboundEquipment = ReducerFactories.excludeUnboundEquipment(DefaultStates.Global, ActionTypes.Global),
     excludeWarbandEquipment = ReducerFactories.excludeWarbandEquipment(DefaultStates.Global, ActionTypes.Global),
@@ -47,6 +48,7 @@ function RootReducer:Build()
     autoSell = ReducerFactories.autoSell(DefaultStates.Perchar, ActionTypes.Perchar),
     safeMode = ReducerFactories.safeMode(DefaultStates.Perchar, ActionTypes.Perchar),
 
+    excludeConsumables = ReducerFactories.excludeConsumables(DefaultStates.Perchar, ActionTypes.Perchar),
     excludeEquipmentSets = ReducerFactories.excludeEquipmentSets(DefaultStates.Perchar, ActionTypes.Perchar),
     excludeUnboundEquipment = ReducerFactories.excludeUnboundEquipment(DefaultStates.Perchar, ActionTypes.Perchar),
     excludeWarbandEquipment = ReducerFactories.excludeWarbandEquipment(DefaultStates.Perchar, ActionTypes.Perchar),

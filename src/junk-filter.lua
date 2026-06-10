@@ -228,6 +228,11 @@ function JunkFilter:IsJunkItem(item)
     return false, concat(L.OPTIONS_TEXT, L.EXCLUDE_EQUIPMENT_SETS_TEXT)
   end
 
+  -- Exclude consumables.
+  if currentState.excludeConsumables and item.classId == Enum.ItemClass.Consumable then
+    return false, concat(L.OPTIONS_TEXT, L.EXCLUDE_CONSUMABLES_TEXT)
+  end
+
   -- Exclude unbound equipment.
   if currentState.excludeUnboundEquipment and (Items:IsItemEquipment(item) and not Items:IsItemBound(item)) then
     local checkBoxValues = currentState.itemQualityCheckBoxes.excludeUnboundEquipment

@@ -85,6 +85,14 @@ function MainWindowOptions:AddExcludeOptions(optionsFrame)
     headingJustify = "CENTER"
   }))
 
+  -- Exclude consumables.
+  optionsFrame:AddChild(Widgets:OptionButton({
+    labelText = L.EXCLUDE_CONSUMABLES_TEXT,
+    tooltipText = L.EXCLUDE_CONSUMABLES_TOOLTIP,
+    get = function() return StateManager:GetCurrentState().excludeConsumables end,
+    set = function(value) StateManager:GetStore():Dispatch(Actions:SetExcludeConsumables(value)) end
+  }))
+
   -- Exclude equipment sets.
   if not (Addon.IS_VANILLA or Addon.IS_TBC) then
     optionsFrame:AddChild(Widgets:OptionButton({
