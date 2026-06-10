@@ -132,7 +132,8 @@ function Widgets:Frame(options)
     }
 
     -- OnMouseUp.
-    frame:SetScript("OnMouseUp", function(_, button, upInside)
+    frame:SetScript("OnMouseUp", function(self, button, upInside)
+      upInside = Addon:IfNil(upInside, self:IsMouseOver())
       if not (upInside and type(button) == "string") then return end
       local modifierValue = getCurrentModifierValue()
       local buttonHandlers = clickHandlers[button]
