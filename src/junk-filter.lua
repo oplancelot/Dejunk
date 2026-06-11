@@ -149,7 +149,6 @@ function JunkFilter:IsJunkItem(item)
 
   -- Check if item can be sold or destroyed.
   if not (Items:IsItemSellable(item) or Items:IsItemDestroyable(item)) then
-    print("|cffff0000[Debug]|r Early Filter (Not Sellable/Destroyable):", item.name, "quality:", item.quality, "price:", item.price, "noValue:", tostring(item.noValue), "junkable:", tostring(Items:IsItemJunkable(item)))
     return false
   end
 
